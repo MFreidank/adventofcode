@@ -84,18 +84,18 @@ def pairwise_comparison(
     else:
         # If both items are lists, compare their respective first elements
         # and recurse into the list tails if needed.
-        (left_element, *left_item), (right_element, *right_item) = left_item, right_item
+        (left_element, *left_tail), (right_element, *right_tail) = left_item, right_item
 
         # NOTE: Special case: At the end of comparison of an equal length sublist,
         # both elements can be empty lists but we still need to recurse into the
         # tails. First check if the tails are also empty lists and return if yes.
         if left_element == [] and right_element == []:
-            if left_item == [] and right_item == []:
+            if left_tail == [] and right_tail == []:
                 # All empty, can be treated as "left list ran out of items"
                 return 1
             else:
                 # Tail items may remain, let's compare them.
-                return pairwise_comparison(left_item, right_item)
+                return pairwise_comparison(left_tail, right_tail)
 
         # Compare first elements
         element_comparison = pairwise_comparison(left_item=left_element, right_item=right_element)
@@ -107,8 +107,8 @@ def pairwise_comparison(
 
         # ...otherwise recurse into the tails
         return pairwise_comparison(
-            left_item,
-            right_item,
+            left_tail,
+            right_tail,
         )
 
 def is_pair_sorted(
