@@ -19,11 +19,12 @@ def generate_inputs(filepath: Path) -> typing.Iterable[str]:
         for line in f:
             yield line.strip()
 
+
 def get_first_and_last_digit(
     string: str,
     digit_match_dict: typing.Dict[str, int] = {
         str(digit): digit for digit in range(1, 10)
-    }
+    },
 ) -> typing.Tuple[int, int]:
     """Obtain first and last digit from the given string, matching digit names using a lookup dictionary.
 
@@ -35,7 +36,7 @@ def get_first_and_last_digit(
         String to match digits in.
 
     digit_match_dict: str, optional
-        Dictionary used to identify digits. 
+        Dictionary used to identify digits.
         Allows specifying that e.g., "one" should be mapped to digit `1`.
 
     Returns
@@ -51,11 +52,11 @@ def get_first_and_last_digit(
 
     for i in range(len(string)):
         for digit_name, digit in digit_match_dict.items():
-            if string[i: i + len(digit_name)] == digit_name:
+            if string[i : i + len(digit_name)] == digit_name:
                 digits.append(digit)
 
     if len(digits) == 1:
-        digit, = digits
+        (digit,) = digits
         first_digit, last_digit = (digit, digit)
     else:
         first_digit, *_, last_digit = digits
@@ -65,7 +66,7 @@ def get_first_and_last_digit(
 
 def part1_solution():
     """Compute sum across lines, concatenating first and last digit of each line.
-       Use only actual (numeric) digits to identify digits in each line.
+    Use only actual (numeric) digits to identify digits in each line.
     """
     calibration_values = []
     for line in generate_inputs(Path(__file__).parent.joinpath("data", "data.txt")):
@@ -73,25 +74,38 @@ def part1_solution():
         calibration_values.append(int(f"{first_digit}{last_digit}"))
     return sum(calibration_values)
 
+
 def part2_solution():
     """Compute sum across lines, concatenating first and last digit of each line.
-       Use both numeric and verbose (e.g., "one" for digit "1") digit representations to identify digits in each line.
+    Use both numeric and verbose (e.g., "one" for digit "1") digit representations to identify digits in each line.
     """
     digit_match_dict = {
         **{
             digit_name: digit
-            for digit, digit_name in enumerate(("one", "two", "three", "four", "five", "six", "seven", "eight", "nine"), 1)
+            for digit, digit_name in enumerate(
+                (
+                    "one",
+                    "two",
+                    "three",
+                    "four",
+                    "five",
+                    "six",
+                    "seven",
+                    "eight",
+                    "nine",
+                ),
+                1,
+            )
         },
-        **{
-            str(digit): digit
-            for digit in range(1, 10)
-        }
+        **{str(digit): digit for digit in range(1, 10)},
     }
 
     calibration_values = []
 
     for line in generate_inputs(Path(__file__).parent.joinpath("data", "data.txt")):
-        first_digit, last_digit = get_first_and_last_digit(line, digit_match_dict=digit_match_dict)
+        first_digit, last_digit = get_first_and_last_digit(
+            line, digit_match_dict=digit_match_dict
+        )
         calibration_values.append(int(f"{first_digit}{last_digit}"))
     return sum(calibration_values)
 
@@ -99,6 +113,7 @@ def part2_solution():
 def main():
     print("PART 1:", part1_solution())
     print("PART 2:", part2_solution())
+
 
 if __name__ == "__main__":
     main()
